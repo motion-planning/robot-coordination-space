@@ -11,7 +11,7 @@
 
 import math
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D  # @UnresolvedImport @UnusedImport, added to suppress warnings when running on windows
+from mpl_toolkits.mplot3d import Axes3D  # @UnresolvedImport @UnusedImport
 
 ### Input Parameters ###
 # Input files
@@ -25,7 +25,7 @@ robotSize = 1  # radius of robots
 maxAngle = 1  # maximum "safe" change in orientation
 maxAcceleration = 1  # maximum "safe" change in velocity
 minDistance = 2  # minimum "safe" distance to obstacles or robots
-supervisors = 1  # maximum number of available human supervisors
+supervisors = -1  # maximum number of available human supervisors, set as negative to disable
 
 ### Global Variables ###
 
@@ -68,7 +68,7 @@ def extractObstacles(info):
         obstacles.append(points)
 
 # Distance from point to line
-# Follows steps outlines in: http://paulbourke.net/geometry/pointlineplane/
+# Follows steps outlined in: http://paulbourke.net/geometry/pointlineplane/
 def distancePointLine (x3, y3, x1, y1, x2, y2):
     px = x2 - x1
     py = y2 - y1
@@ -81,7 +81,8 @@ def distancePointLine (x3, y3, x1, y1, x2, y2):
         u = 0
     elif u > 1:
         u = 1
-    x = x1 + u * px
+
+    x = x1 + u * px
     y = y1 + u * py
 
     return math.sqrt((x - x3) * (x - x3) + (y - y3) * (y - y3))
@@ -128,7 +129,7 @@ def extractPolicies(info):
         state = [vs[0], xs[0], ys[0], thetas[0], True]  # Assemble initial safe state
         trajectory.append(state)
 
-        for i in range(1, len(vs)):  # Iterate over all other cases
+        for i in xrange(1, len(vs)):  # Iterate over all other cases
             safety = checkSafety(vs[i - 1], vs[i], xs[i], ys[i], thetas[i - 1], thetas[i])  # Check safety of state
             state = [vs[i], xs[i], ys[i], thetas[i], safety]  # Assemble each state
             trajectory.append(state)  # Append to create trajectory for each robot
@@ -159,13 +160,13 @@ def createCoordinationSpace(n, depth, configuration):
             collision = False
             # Check all collisions in the current state
             humans = supervisors
-            for A1 in range(len(configuration)):  # Loop through all states of robots A1, A2
+            for A1 in xrange(len(configuration)):  # Loop through all states of robots A1, A2
                 if collision == False:  # Prevent unnecessary loops
-                    for A2 in range(A1 + 1, len(configuration)):
-                            if checkSupervision(A1, configuration[A1], A2, configuration[A2]):
-                                humans -= 1
-                            if checkCollisions(A1, configuration[A1], A2, configuration[A2]) or humans <= 0:
-                                collision = True
+                    for A2 in xrange(A1 + 1, len(configuration)):
+                        if checkSupervision(A1, configuration[A1], A2, configuration[A2]):
+                            humans -= 1
+                        if checkCollisions(A1, configuration[A1], A2, configuration[A2]) or (humans < 0 and supervisors >= 0):
+                            collision = True
             if collision:
                 array.append(1)
             else:
@@ -217,7 +218,7 @@ def plotPaths():
         polygon.append(polygon[0])
         xs = []
         ys = []
-        for i in range(len(polygon)):
+        for i in xrange(len(polygon)):
             xs.append(polygon[i][0])
             ys.append(polygon[i][1])
         plt.plot(xs, ys)
@@ -234,8 +235,8 @@ def plot2DCoordinationSpace():
     ys = []
 
     # Iterate over every combination of states in Coordination Space
-    for x in range(len(cSpace)):
-        for y in range(len(cSpace[0])):
+    for x in xrange(len(cSpace)):
+        for y in xrange(len(cSpace[0])):
             if cSpace[x][y] == 1:
                 xs.append(x)
                 ys.append(y)
@@ -259,9 +260,9 @@ def plot3DCoordinationSpace():
     zs = []
 
     # Iterate over every combination of states in Coordination Space
-    for x in range(len(cSpace)):
-        for y in range(len(cSpace[x])):
-            for z in range(len(cSpace[x][y])):
+    for x in xrange(len(cSpace)):
+        for y in xrange(len(cSpace[x])):
+            for z in xrange(len(cSpace[x][y])):
                 if cSpace[x][y][z] == 1:
                     xs.append(x)
                     ys.append(y)
@@ -278,6 +279,12 @@ def plot3DCoordinationSpace():
     zLabel = ax.set_zlabel('Robot 3')
     plt.show()
 
+def plotCSpace():
+    if len(robots) == 2:
+        plot2DCoordinationSpace()
+    elif len(robots) == 3:
+        plot3DCoordinationSpace()
+
 # Print a 2D view of Configuration Space Matrix
 def printCSpace():
     for i in cSpace:
@@ -289,11 +296,8 @@ extractPolicies(readFile(policyFilename))
 cSpace = createMatrix()
 
 ### Optional Function Calls Here ###
-# plotPaths()
-plot2DCoordinationSpace()
-# plot3DCoordinationSpace()
+plotPaths()
+plotCSpace()
 
 ### Debug Function Calls Here ###
 # printCSpace()
-
-

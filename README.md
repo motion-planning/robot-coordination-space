@@ -8,8 +8,8 @@ Generates a coordination space for n robots with n static obstacles residing in 
 * Takes as input the obstacle and policy files from a working trajectory given by the [MSL Library](http://msl.cs.uiuc.edu/msl/).
 * Generates an n-dimensional coordination space indicating which areas can result in a collision.
 * Also provides ability to:
---* Plot 2D robot trajectories
---* Plot 2D and 3D coordination space
+    * Plot 2D robot trajectories
+    * Plot 2D and 3D coordination space
 
 ### How do I get set up? ###
 
