@@ -234,7 +234,7 @@ def findTrajectoryLength(robot):
 # TODO: this does a lot of the same work as findTrajectoryLength and can be combined
 # TODO: this can also be combined with extractPolicies
 def normalizeTrajectory(robot):
-    time = 1
+    time = 2
     trajectoryLength = findTrajectoryLength(robot)
     intervals = math.floor(trajectoryLength / (robots[robot][0][0] * time))
     intervalLength = trajectoryLength / intervals
@@ -259,8 +259,11 @@ def normalizeTrajectory(robot):
             dX /= length
             dY /= length
 
-            dX *= intervalLength
-            dY *= intervalLength
+            distance = distOldStates - distNewStates
+            addDiff = length - distance
+
+            dX *= addDiff
+            dY *= addDiff
 
             newX = prevX + dX
             newY = prevY + dY
