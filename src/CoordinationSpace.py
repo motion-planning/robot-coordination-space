@@ -208,7 +208,7 @@ def plot3DCoordinationSpace():
 def printCSpace():
     for i in cSpace:
         print i
-        
+
 def plotCSpace():
     if len(robots) == 2:
         plot2DCoordinationSpace()
@@ -233,8 +233,10 @@ def findTrajectoryLength(robot):
 
 # TODO: this does a lot of the same work as findTrajectoryLength and can be combined
 # TODO: this can also be combined with extractPolicies
-def normalizeTrajectory(robot, intervals):
+def normalizeTrajectory(robot):
+    time = 1
     trajectoryLength = findTrajectoryLength(robot)
+    intervals = math.floor(trajectoryLength / (robots[robot][0][0] * time))
     intervalLength = trajectoryLength / intervals
     distOldStates = 0
     distNewStates = 0
@@ -271,17 +273,17 @@ def normalizeTrajectory(robot, intervals):
 
 def normalizeAllTrajectories():
     for robot in range(len(robots)):
-        robots[robot] = normalizeTrajectory(robot, 100)
+        robots[robot] = normalizeTrajectory(robot)
 
 ### Required Function Calls ####
 extractObstacles(readFile(obstacleFilename))
 extractPolicies(readFile(policyFilename))
 normalizeAllTrajectories()
-# cSpace = createMatrix()
+cSpace = createMatrix()
 
 ### Optional Function Calls Here ###
 plotPaths()
-# plotCSpace()
+plotCSpace()
 
 ### Debug Function Calls Here ###
 # printCSpace()
