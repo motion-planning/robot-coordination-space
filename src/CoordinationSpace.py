@@ -170,7 +170,8 @@ def plot2DCoordinationSpace():
                 xs.append(x)
                 ys.append(y)
 
-    plt.scatter(xs, ys)
+    plt.scatter(xs, ys, color='blue')
+
     plt.xlim([0, len(cSpace)])
     plt.ylim([0, len(cSpace[0])])
 
@@ -364,7 +365,7 @@ def aStarSearch():
                 return successor
             g = q[1] + 1
             h = costToGo(successor)
-            successor = [cSpace[successor[0]][successor[1]], g, h, g + h, q[5], successor]
+            successor = [cSpace[successor[0]][successor[1]][0], g, h, g + h, q[5], successor]
 
             if not skipSuccessor(openList, successor) and not skipSuccessor(closedList, successor):
                 heapq.heappush(openList, successor)
@@ -372,19 +373,19 @@ def aStarSearch():
 
     return "could not find path"
 
-
-#         otherwise, add the node to the open list
-#     end
-#     push q on the closed list
-# end
-
+def addPath(parent):
+    while parent[5] != [0, 0]:
+        print parent
+        cSpace[parent[5[0]]][parent[5[1]]][0] = 2
+        parent = parent[4]
 
 ### Required Function Calls ####
 extractObstacles(readFile(obstacleFilename))
 extractPolicies(readFile(policyFilename))
 normalizeAllTrajectories()
 cSpace = createMatrix()
-print aStarSearch()
+parent = aStarSearch()
+addPath(parent)
 
 ### Optional Function Calls Here ###
 # plotPaths()
