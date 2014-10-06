@@ -1,65 +1,43 @@
-# Truck
+import matplotlib.pyplot as plt
+
 test = ''
+xs = []
+ys = []
 
-for x in range(-75, -50):
-    test += str(2) + ' '
-    test += str(x) + ' '
-    test += str(25) + ' '
-    test += str(0) + ' '
-
-for x in range(-50, 51):
-    test += str(2) + ' '
-    test += str(x) + ' '
-    test += str(25 - (2500 - x ** 2) ** 0.5) + ' '
-    test += str(0) + ' '
-
-for x in range(51, 75):
-    test += str(2) + ' '
-    test += str(x) + ' '
-    test += str(25) + ' '
-    test += str(0) + ' '
-print test
-
-# Crane
-test = ''
-
-for x in range(-75, -50):
-    test += str(3) + ' '
-    test += str(x) + ' '
-    test += str(-25) + ' '
-    test += str(0) + ' '
-
-for x in range(-50, 51):
-    test += str(3) + ' '
-    test += str(x) + ' '
-    test += str((2500 - x ** 2) ** 0.5 - 25) + ' '
-    test += str(0) + ' '
-
-for x in range(51, 75):
-    test += str(3) + ' '
-    test += str(x) + ' '
-    test += str(-25) + ' '
-    test += str(0) + ' '
-print test
-
-# Human
-test = ''
-
-for x in range(-50, 0):
+for x in range(45, 50):
     test += str(1) + ' '
     test += str(x) + ' '
-    test += str(x - 50) + ' '
+    xs.append(x)
+    test += str(x - 20) + ' '
+    ys.append(x - 20)
+    test += str(0) + ' '
+    test += str(0) + ' '
+    test += str(0) + ' '
     test += str(0) + ' '
 
-for y in range(-50, 51):
+for y in range(30, 80):
     test += str(1) + ' '
-    test += str(0) + ' '
+    test += str(50) + ' '
+    xs.append(50)
     test += str(y) + ' '
+    ys.append(y)
+    test += str(0) + ' '
+    test += str(0) + ' '
+    test += str(0) + ' '
     test += str(0) + ' '
 
-for x in range(1, 50):
+for x in range(50, 55):
     test += str(1) + ' '
     test += str(x) + ' '
-    test += str(x + 50) + ' '
+    xs.append(x)
+    test += str(x + 30) + ' '
+    ys.append(x + 30)
     test += str(0) + ' '
+    test += str(0) + ' '
+    test += str(0) + ' '
+    test += str(0) + ' '
+
 print test
+
+plt.plot(xs, ys, color='red')
+plt.show()
