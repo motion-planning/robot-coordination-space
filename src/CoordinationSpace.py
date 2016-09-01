@@ -2,7 +2,7 @@
 # http://msl.cs.uiuc.edu/msl/
 import math
 from heapq import heappush, heappop  # for priority queue
-
+from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
 # Input Parameters
@@ -45,7 +45,7 @@ def extractObstacles(info):
         # Iterate over all points and add them to an array representing the obstacle
         for endpoint in line:
             point = []
-            x, y = map(float, endpoint.strip('()').split(','))
+            x, y = list(map(float, endpoint.strip('()').split(',')))
             point.append(float(x))
             point.append(float(y))
             points.append(point)
@@ -68,7 +68,7 @@ def extractPolicies(info):
         state = [vs[0], xs[0], ys[0], thetas[0], True]  # Assemble initial safe state
         trajectory.append(state)
 
-        for i in xrange(1, len(vs)):  # Iterate over all other cases
+        for i in range(1, len(vs)):  # Iterate over all other cases
             state = [vs[i], xs[i], ys[i], thetas[i]]  # Assemble each state
             trajectory.append(state)  # Append to create trajectory for each robot
         robots.append(trajectory)  # Add each robot trajectory to list of robots
@@ -94,14 +94,14 @@ def createCoordinationSpace(n, depth, configuration):
     # 0 if no collision, 1 if any robot in that state collides with any other robot in the same state
     if depth == len(n) - 1:
         array = []
-        for i in xrange(0, n[depth]):
+        for i in range(0, n[depth]):
             configuration.append(i)
             # s = state, given by the position in configuration;
             collision = False
             # Check all collisions in the current state
-            for A1 in xrange(len(configuration)):  # Loop through all states of robots A1, A2
+            for A1 in range(len(configuration)):  # Loop through all states of robots A1, A2
                 if not collision:  # Prevent unnecessary loops
-                    for A2 in xrange(A1 + 1, len(configuration)):
+                    for A2 in range(A1 + 1, len(configuration)):
                         if checkCollisions(A1, configuration[A1], A2, configuration[A2]):
                             collision = True
             if collision:
@@ -115,7 +115,7 @@ def createCoordinationSpace(n, depth, configuration):
     else:
         array = []
         # Recursively call function for each element in each dimension
-        for i in xrange(0, n[depth]):
+        for i in range(0, n[depth]):
             # Add current dimension being generated to configuration
             configuration.append(i)
             array.append(createCoordinationSpace(n, depth + 1, configuration))
@@ -150,7 +150,7 @@ def plotPaths():
         polygon.append(polygon[0])
         xs = []
         ys = []
-        for i in xrange(len(polygon)):
+        for i in range(len(polygon)):
             xs.append(polygon[i][0])
             ys.append(polygon[i][1])
         plt.plot(xs, ys)
@@ -170,8 +170,8 @@ def plot2DCoordinationSpace():
     pathYs = []
 
     # Iterate over every combination of states in Coordination Space
-    for x in xrange(len(cSpace)):
-        for y in xrange(len(cSpace[0])):
+    for x in range(len(cSpace)):
+        for y in range(len(cSpace[0])):
             if cSpace[x][y] == 1:
                 xs.append(x)
                 ys.append(y)
@@ -205,9 +205,9 @@ def plot3DCoordinationSpace():
     zps = []
 
     # Iterate over every combination of states in Coordination Space
-    for x in xrange(len(cSpace)):
-        for y in xrange(len(cSpace[x])):
-            for z in xrange(len(cSpace[x][y])):
+    for x in range(len(cSpace)):
+        for y in range(len(cSpace[x])):
+            for z in range(len(cSpace[x][y])):
                 if cSpace[x][y][z] == 1:
                     xs.append(float(x) / len(cSpace))
                     ys.append(float(y) / len(cSpace[0]))
@@ -235,7 +235,7 @@ def plot3DCoordinationSpace():
 # Print a 2D view of Configuration Space Matrix
 def printCSpace():
     for i in cSpace:
-        print i
+        print(i)
 
 
 def plotCSpace():
@@ -317,7 +317,7 @@ def normalizeTrajectory(robot):
 
 
 def normalizeAllTrajectories():
-    for robot in xrange(len(robots)):
+    for robot in range(len(robots)):
         robots[robot] = normalizeTrajectory(robot)
 
 
@@ -373,7 +373,7 @@ def pathFind(the_map, n, m, o, dirs, dx, dy, dz, xA, yA, zA, xB, yB, zB):
     # closed_nodes_map = []  # map of closed (tried-out) nodes
     # open_nodes_map = []  # map of open (not-yet-tried) nodes
     # dir_map = []  # map of dirs
-    myMap = [[[0 for k in xrange(o)] for j in xrange(m)] for i in xrange(n)]
+    myMap = [[[0 for k in range(o)] for j in range(m)] for i in range(n)]
     closed_nodes_map = myMap
     open_nodes_map = myMap
     dir_map = myMap
@@ -408,7 +408,7 @@ def pathFind(the_map, n, m, o, dirs, dx, dy, dz, xA, yA, zA, xB, yB, zB):
                 last_node = last_node.parent
             return "success"
         # generate moves (child nodes) in all possible dirs
-        for i in xrange(dirs):
+        for i in range(dirs):
             xdx = x + dx[i]
             ydy = y + dy[i]
             zdz = z + dz[i]

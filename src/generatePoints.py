@@ -4,7 +4,7 @@ test = ''
 xs = []
 ys = []
 
-for x in xrange(45, 50):
+for x in range(45, 50):
     test += str(1) + ' '
     test += str(x) + ' '
     xs.append(x)
@@ -15,7 +15,7 @@ for x in xrange(45, 50):
     test += str(0) + ' '
     test += str(0) + ' '
 
-for y in xrange(30, 80):
+for y in range(30, 80):
     test += str(1) + ' '
     test += str(50) + ' '
     xs.append(50)
@@ -26,7 +26,7 @@ for y in xrange(30, 80):
     test += str(0) + ' '
     test += str(0) + ' '
 
-for x in xrange(50, 55):
+for x in range(50, 55):
     test += str(1) + ' '
     test += str(x) + ' '
     xs.append(x)
@@ -37,7 +37,7 @@ for x in xrange(50, 55):
     test += str(0) + ' '
     test += str(0) + ' '
 
-print test
+print(test)
 
 plt.plot(xs, ys, color='red')
 plt.show()
